@@ -1,5 +1,5 @@
 """nanobanana(Gemini 이미지 모델)로 덱 이미지 에셋 생성 -> assets/img/*.jpg
-키: 프로젝트 루트 .env 의 GEMINI_API_KEY
+키: 저장소 루트 .env 의 GEMINI_API_KEY (결제 연결된 Google AI Studio 프로젝트 필요)
 사용법: python scripts/gen_images.py [이름 ...]   (이름 생략 시 전부)
 """
 import base64
@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image
 
 BASE = Path(__file__).resolve().parents[1]
-ENV = BASE.parent / ".env"
+ENV = BASE / ".env"  # 저장소 루트 .env (git 제외). .env.example 참고
 OUT = BASE / "assets" / "img"
 API = "https://generativelanguage.googleapis.com/v1beta"
 import os

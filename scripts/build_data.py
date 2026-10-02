@@ -5,11 +5,11 @@ import re
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(__file__).resolve().parents[1] / "data" / "models.json"
-STAMP = "20261002_1102"
-PRODUCTS = ROOT / "output" / f"schoolmusic_bass_year_products_{STAMP}.csv"
-REVIEWS = ROOT / "output" / f"schoolmusic_bass_year_reviews_{STAMP}.csv"
+BASE = Path(__file__).resolve().parents[1]
+OUT = BASE / "data" / "models.json"
+RAW = BASE / "data" / "raw"  # crawler/crawl_schoolmusic_bass.py 결과 CSV를 여기에 둔다 (가장 최신 것을 사용)
+PRODUCTS = sorted(RAW.glob("schoolmusic_bass_year_products_*.csv"))[-1]
+REVIEWS = sorted(RAW.glob("schoolmusic_bass_year_reviews_*.csv"))[-1]
 
 # (키, 표시명, 브랜드, 상품명 매칭 문자열)
 MODELS = [

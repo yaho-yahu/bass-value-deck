@@ -8,11 +8,11 @@ from collections import Counter
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-ROOT = BASE.parent
+RAW = BASE / "data" / "raw"
 HTML = (BASE / "index.html").read_text(encoding="utf-8")
 DATA = json.loads((BASE / "data" / "models.json").read_text(encoding="utf-8"))
-P = list(csv.DictReader(open(ROOT / "output/schoolmusic_bass_year_products_20261002_1102.csv", encoding="utf-8-sig")))
-R = list(csv.DictReader(open(ROOT / "output/schoolmusic_bass_year_reviews_20261002_1102.csv", encoding="utf-8-sig")))
+P = list(csv.DictReader(open(sorted(RAW.glob("schoolmusic_bass_year_products_*.csv"))[-1], encoding="utf-8-sig")))
+R = list(csv.DictReader(open(sorted(RAW.glob("schoolmusic_bass_year_reviews_*.csv"))[-1], encoding="utf-8-sig")))
 
 fails = []
 
