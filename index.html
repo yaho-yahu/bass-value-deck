@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>50만원 베이스 가성비 리포트</title>
+<meta name="description" content="스쿨뮤직 2026 연간 판매순위 베이스 20위권 구매후기 170건 분석">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: fixed 1600x900 stage scaled to the window; one idea per slide, title top-left, evidence below. Dark stage = rehearsal room. */
+:root {
+  color-scheme: dark;
+  --stage: #10131a;
+  --panel: #171b24;
+  --panel-2: #1e2430;
+  --ink: #eef1f5;
+  --ink-2: #aab2c0;
+  --ink-3: #6f7887;
+  --line: #2a303c;
+  --accent: #f2b544;
+  --blue: #3987e5;
+  --orange: #d95926;
+  --aqua: #199e70;
+  --gray: #4a515d;
+  --red: #e66767;
+  --font-display: "Black Han Sans", "IBM Plex Sans KR", "Malgun Gothic", sans-serif;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #0a0c11; color: var(--ink); font-family: var(--font-body); overflow: hidden; }
+.viewport { position: fixed; inset: 0; overflow: hidden; }
+.stage { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; transform-origin: center center; background: var(--stage); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 72px 96px 84px; display: flex; flex-direction: column; gap: 28px; opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility 0s linear .45s; word-break: keep-all; }
+.slide.active { opacity: 1; visibility: visible; transition: opacity .45s ease; }
+.eyebrow { font-family: var(--font-body); font-weight: 700; font-size: 18px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; text-wrap: balance; }
+h2 { font-size: 54px; line-height: 1.18; }
+.sub { font-size: 24px; color: var(--ink-2); line-height: 1.6; max-width: 62ch; margin: 0; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.head { display: grid; gap: 12px; }
+.body { flex: 1; min-height: 0; display: grid; gap: 40px; }
+.fx { will-change: transform, opacity; }
+
+/* chrome */
+.chrome { position: fixed; left: 0; right: 0; bottom: 0; padding: 0 20px calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 14px; z-index: 10; pointer-events: none; }
+.progress { flex: 1; height: 3px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .35s ease; }
+.counter { font-family: var(--font-data); font-size: 13px; color: var(--ink-3); min-width: 52px; text-align: right; }
+.navbtn { pointer-events: auto; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: rgba(23,27,36,.85); color: var(--ink-2); font-size: 16px; cursor: pointer; display: grid; place-items: center; }
+.navbtn:hover { color: var(--ink); border-color: var(--ink-3); }
+.navbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* strings motif: G D A E gauges */
+.strings { position: absolute; left: 0; right: 0; bottom: 120px; height: 120px; pointer-events: none; }
+.strings svg { width: 100%; height: 100%; overflow: visible; }
+
+/* 1 cover */
+.cover { padding: 0; }
+.cover .bg { position: absolute; inset: 0; background: radial-gradient(1200px 600px at 78% 30%, #3a2a12 0%, transparent 60%), linear-gradient(120deg, #10131a 0%, #161b26 55%, #1d1810 100%); }
+.cover .bg img { width: 100%; height: 100%; object-fit: cover; opacity: .62; }
+.cover .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,12,17,.94) 0%, rgba(10,12,17,.72) 46%, rgba(10,12,17,.08) 100%); }
+.cover .inner { position: relative; height: 100%; padding: 96px 96px 0; display: flex; flex-direction: column; gap: 26px; }
+.cover h1 { font-size: 104px; line-height: 1.08; max-width: 9.5em; }
+.cover h1 .ch { display: inline-block; }
+.cover .sub { font-size: 26px; max-width: 30em; }
+.cover .meta { position: absolute; left: 96px; bottom: 56px; font-family: var(--font-data); color: var(--ink-3); font-size: 16px; letter-spacing: .06em; }
+
+/* 2 verdict */
+.verdict { grid-template-columns: 1.15fr 1fr; align-items: center; }
+.verdict .big { display: grid; gap: 16px; }
+.verdict .tag { display: inline-flex; width: max-content; padding: 6px 16px; border-radius: 999px; background: var(--accent); color: #1a1405; font-weight: 700; font-size: 20px; }
+.verdict .model { font-family: var(--font-display); font-size: 76px; line-height: 1.08; }
+.verdict .price { font-family: var(--font-data); font-size: 68px; color: var(--accent); line-height: 1; }
+.verdict .price small { font-size: 30px; color: var(--ink-2); margin-left: 6px; }
+.verdict .was { font-family: var(--font-data); font-size: 24px; color: var(--ink-3); }
+.verdict .was s { margin-right: 14px; }
+.verdict .why { font-size: 24px; color: var(--ink-2); line-height: 1.6; max-width: 26em; margin: 0; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.tile { background: var(--panel); border-radius: 14px; padding: 28px 30px; display: grid; gap: 6px; }
+.tile .v { font-family: var(--font-data); font-size: 64px; line-height: 1.05; }
+.tile .k { color: var(--ink-2); font-size: 20px; }
+.tile.good .v { color: var(--accent); }
+
+/* 3 & 11 video */
+.vid { position: relative; align-self: center; width: 1180px; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; background: var(--stage); justify-self: center; }
+.vid video, .vid img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.vid.wide { width: 1240px; }
+
+/* 4 rank grid */
+.ranks { grid-template-columns: 1.55fr 1fr; align-items: start; }
+.grid20 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.cell { height: 112px; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; color: #fff; position: relative; }
+.cell .r { font-family: var(--font-data); font-size: 15px; opacity: .85; }
+.cell .m { font-weight: 700; font-size: 19px; line-height: 1.25; }
+.cell.pkg { background: transparent !important; border: 1.5px dashed var(--gray); color: var(--ink-3); }
+.cell.pkg .m { font-weight: 500; font-size: 16px; }
+.cell .star { position: absolute; top: 10px; right: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(242,181,68,.25); }
+.brandbars { display: grid; gap: 18px; padding-top: 6px; }
+.bb-row { display: grid; grid-template-columns: 120px 1fr 44px; gap: 14px; align-items: center; font-size: 21px; }
+.bb-track { height: 26px; }
+.bb-fill { height: 100%; border-radius: 0 6px 6px 0; transform-origin: left center; }
+.bb-row .n { font-family: var(--font-data); text-align: right; }
+.legend { display: flex; flex-wrap: wrap; gap: 22px; color: var(--ink-2); font-size: 18px; }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 8px; vertical-align: -1px; }
+.note { color: var(--ink-3); font-size: 17px; }
+
+/* charts */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.chart text { font-family: var(--font-body); }
+.chart .tick { fill: var(--ink-3); font-family: var(--font-data); font-size: 15px; }
+.chart .lab { fill: var(--ink); font-size: 19px; }
+.chart .val { fill: var(--ink-2); font-family: var(--font-data); font-size: 16px; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: #f4f6f9; color: #10131a; padding: 12px 14px; border-radius: 8px; font-size: 16px; line-height: 1.5; min-width: 200px; box-shadow: 0 8px 28px rgba(0,0,0,.4); }
+.tooltip b { font-family: var(--font-data); font-size: 21px; display: block; }
+.tooltip span { display: block; color: #4a505b; }
+.hit { cursor: pointer; }
+.hit:focus { outline: none; }
+.hit:focus-visible + .ring, .hit:hover + .ring { opacity: 1; }
+
+/* static chart slides */
+.split { grid-template-columns: 1.6fr 1fr; align-items: center; }
+.split.even { grid-template-columns: 1fr 1fr; }
+.figure { width: 100%; }
+.figure img { width: 100%; display: block; }
+.points { display: grid; gap: 22px; align-content: center; }
+.point { border-left: 3px solid var(--accent); padding: 4px 0 4px 20px; display: grid; gap: 4px; }
+.point b { font-size: 26px; line-height: 1.35; }
+.point span { color: var(--ink-2); font-size: 19px; line-height: 1.55; }
+.point.warn { border-left-color: var(--red); }
+.point.blue { border-left-color: var(--blue); }
+
+/* 9 topics */
+.topics { display: grid; gap: 16px; align-content: center; }
+.tp { display: grid; grid-template-columns: 140px 1fr 70px; gap: 16px; align-items: center; font-size: 21px; }
+.tp .track { height: 22px; background: var(--panel); border-radius: 0 6px 6px 0; overflow: hidden; }
+.tp .fill { height: 100%; background: var(--blue); border-radius: 0 6px 6px 0; transform-origin: left center; }
+.tp.neg .fill { background: var(--red); }
+.tp .n { font-family: var(--font-data); color: var(--ink-2); text-align: right; }
+.photo { border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #1e2430, #2a2216); position: relative; height: 100%; min-height: 0; }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 22px 18px; background: linear-gradient(transparent, rgba(10,12,17,.88)); font-size: 18px; color: var(--ink-2); }
+
+/* 10 defects */
+.quote { background: var(--panel); border-radius: 12px; padding: 18px 22px; display: grid; gap: 6px; border-left: 3px solid var(--red); }
+.quote p { margin: 0; font-size: 20px; line-height: 1.55; }
+.quote cite { font-style: normal; font-family: var(--font-data); color: var(--ink-3); font-size: 15px; }
+.quote.ok { border-left-color: var(--blue); }
+
+/* 12 picks */
+.picks { grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; }
+.pick { background: var(--panel); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+.pick .top { height: 150px; position: relative; background: linear-gradient(135deg, #22324a, #10131a); }
+.pick .top img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .75; }
+.pick .role { position: absolute; left: 18px; bottom: 14px; padding: 5px 12px; border-radius: 999px; font-size: 16px; font-weight: 700; background: rgba(10,12,17,.78); color: var(--ink); }
+.pick.first .role { background: var(--accent); color: #1a1405; }
+.pick .in { padding: 22px 22px 24px; display: grid; gap: 10px; align-content: start; flex: 1; }
+.pick h3 { margin: 0; font-size: 27px; line-height: 1.25; }
+.pick .p { font-family: var(--font-data); font-size: 30px; color: var(--accent); }
+.pick .stats { display: flex; gap: 14px; font-family: var(--font-data); font-size: 16px; color: var(--ink-2); flex-wrap: wrap; }
+.pick p { margin: 0; color: var(--ink-2); font-size: 18px; line-height: 1.6; }
+.pick .dist { display: flex; height: 10px; border-radius: 5px; overflow: hidden; gap: 2px; background: var(--panel-2); }
+.pick .dist i { display: block; height: 100%; }
+.pick blockquote { margin: auto 0 0; padding: 14px 16px; background: var(--panel-2); border-radius: 10px; font-size: 17px; line-height: 1.55; color: var(--ink); }
+.pick blockquote cite { display: block; font-style: normal; font-family: var(--font-data); font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+.pick .in { display: flex; flex-direction: column; }
+
+/* 13 caution */
+.caution { grid-template-columns: 1fr 1fr; align-items: start; }
+.cblock { display: grid; gap: 14px; }
+.cblock h3 { margin: 0; font-size: 32px; display: flex; align-items: baseline; gap: 14px; }
+.cblock h3 .chip { font-size: 16px; padding: 4px 12px; border-radius: 999px; background: rgba(230,103,103,.16); color: var(--red); font-weight: 700; }
+.cblock .lead { color: var(--ink-2); font-size: 20px; line-height: 1.6; margin: 0; }
+.cstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cstats div { background: var(--panel); border-radius: 12px; padding: 16px 18px; display: grid; gap: 2px; }
+.cstats b { font-family: var(--font-data); font-size: 34px; font-weight: 500; }
+.cstats span { color: var(--ink-2); font-size: 16px; }
+.cstats .bad b { color: var(--red); }
+
+/* 14 closing */
+.closing { grid-template-columns: 1fr 1fr; align-items: stretch; }
+.limits { display: grid; gap: 16px; align-content: start; margin: 0; padding: 0; list-style: none; }
+.limits li { font-size: 19px; color: var(--ink-2); line-height: 1.55; padding-left: 22px; position: relative; }
+.limits li::before { content: ""; position: absolute; left: 0; top: .65em; width: 10px; height: 2px; background: var(--ink-3); }
+.final { position: relative; border-radius: 16px; overflow: hidden; background: linear-gradient(160deg, #2a2216, #10131a); }
+.final img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.final .txt { position: absolute; left: 34px; right: 34px; bottom: 34px; display: grid; gap: 12px; }
+.final .txt b { font-family: var(--font-display); font-weight: 400; font-size: 42px; line-height: 1.25; }
+.nowrap { white-space: nowrap; }
+.final .txt > span { color: var(--ink-2); font-size: 20px; line-height: 1.55; }
+
+@media (prefers-reduced-motion: reduce) { .slide, .progress i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+  <!-- 1 -->
+  <section class="slide cover" data-anim="cover" aria-label="표지">
+    <div class="bg"><img src="assets/img/hero.jpg" alt="" onerror="this.remove()"></div>
+    <div class="shade"></div>
+    <div class="strings" aria-hidden="true"><svg viewBox="0 0 1600 120" preserveAspectRatio="none" id="strings"></svg></div>
+    <div class="inner">
+      <div class="eyebrow fx">Schoolmusic · 2026 연간 판매순위 베이스 · 리뷰 170건</div>
+      <h1 id="coverTitle">50만원으로 어떤 베이스를 살까</h1>
+      <p class="sub fx">판매순위 20위권 베이스 10개 모델의 구매후기를 전부 읽고 가격과 함께 비교했습니다.</p>
+    </div>
+    <div class="meta fx">2026-10-02 수집 · schoolmusic.co.kr</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-anim="verdict" aria-label="결론">
+    <div class="head"><div class="eyebrow fx">결론부터</div></div>
+    <div class="body verdict">
+      <div class="big">
+        <span class="tag fx">가성비 1순위</span>
+        <div class="model fx">Cort Action<br>Bass Plus</div>
+        <div class="price fx"><span class="num" data-count="251100" data-format="won">0</span><small>원</small></div>
+        <div class="was fx"><s>349,000원</s>28% 할인 · 연간 판매 3위</div>
+        <p class="why fx">20위권에서 가장 싸면서 평점은 최상위권이고, 버징이나 흠집 같은 결함을 말한 리뷰가 한 건도 없습니다.</p>
+      </div>
+      <div class="tiles">
+        <div class="tile fx"><div class="v" data-count="4.91" data-dec="2">0</div><div class="k">평균 평점 (5점 만점)</div></div>
+        <div class="tile fx"><div class="v" data-count="23">0</div><div class="k">구매후기 수</div></div>
+        <div class="tile fx"><div class="v" data-count="91" data-suffix="%">0</div><div class="k">5점 비율</div></div>
+        <div class="tile good fx"><div class="v" data-count="0">0</div><div class="k">결함 리뷰</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" data-anim="video" aria-label="조사 방법">
+    <div class="head"><div class="eyebrow fx">조사 방법</div><h2 class="fx">순위 20개에서 리뷰 170건까지</h2></div>
+    <div class="vid fx"><video src="assets/video/Funnel.mp4" poster="assets/video/Funnel.png" muted playsinline preload="auto"></video></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" data-anim="ranks" aria-label="판매순위 점유">
+    <div class="head"><div class="eyebrow fx">2026 연간 판매순위 1–20위</div><h2 class="fx">20위권의 4분의 3을 세 브랜드가 차지했다</h2></div>
+    <div class="body ranks">
+      <div class="grid20" id="grid20"></div>
+      <div style="display:grid;gap:26px;align-content:start">
+        <div class="brandbars" id="brandbars"></div>
+        <div class="legend fx"><span><i style="background:var(--accent);border-radius:50%"></i>추천 모델</span><span><i style="border:1.5px dashed var(--gray)"></i>베이스 아님</span></div>
+        <p class="note fx">Swing은 5개, Hex는 4개 색상이 각각 순위에 올랐습니다. 같은 모델이라도 색상별로 따로 집계됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" data-anim="price" aria-label="가격 분포">
+    <div class="head"><div class="eyebrow fx">판매가 (할인가 기준)</div><h2 class="fx">10개 중 7개가 25만~31만원에 몰려 있다</h2></div>
+    <div class="body"><div class="chart" id="priceChart" style="height:560px"></div></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" data-anim="bubble" aria-label="가격 평점 리뷰수">
+    <div class="head"><div class="eyebrow fx">가격 × 평균 평점 × 리뷰 수</div><h2 class="fx">왼쪽 위로 갈수록 싸고 평점이 높다</h2></div>
+    <div class="body"><div class="chart" id="bubbleChart" style="height:580px"></div></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-anim="reveal" aria-label="평점 분포">
+    <div class="head"><div class="eyebrow fx">모델별 평점 분포 · matplotlib</div><h2 class="fx">3점 이하는 세 모델에서만 나왔다</h2></div>
+    <div class="body split">
+      <div class="figure reveal"><img src="assets/charts/rating_dist.svg" alt="모델별 5점, 4점, 3점, 2점 리뷰 비율 누적 막대"></div>
+      <div class="points">
+        <div class="point warn fx"><b>Swing · GB24JJ · Action PJ</b><span>3점 이하 리뷰가 나온 모델은 이 셋뿐입니다. Swing에는 유일한 2점이 있습니다.</span></div>
+        <div class="point fx"><b>Hex B100 29/31 만점</b><span>리뷰 30건 이상 모델 중 5점 비율이 가장 높습니다.</span></div>
+        <div class="point blue fx"><b>전체 평균 4.85점</b><span>170건 중 152건이 5점이라 평점만으로는 차이가 잘 드러나지 않습니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" data-anim="reveal" aria-label="리뷰 연도">
+    <div class="head"><div class="eyebrow fx">리뷰 작성 연도 · matplotlib</div><h2 class="fx">리뷰의 80%가 2023년 이후에 쓰였다</h2></div>
+    <div class="body split">
+      <div class="figure reveal"><img src="assets/charts/years.svg" alt="2016년부터 2026년까지 연도별 리뷰 수 막대"></div>
+      <div class="points">
+        <div class="point fx"><b>지금도 팔리는 모델들</b><span>2025년 이후에만 51건이 새로 달렸습니다.</span></div>
+        <div class="point blue fx"><b>Action Bass Plus는 2016년부터</b><span>가장 오래 검증된 모델입니다. 2025년 이후 리뷰 4건도 모두 5점입니다.</span></div>
+        <div class="point blue fx"><b>Hex B100은 최근 강세</b><span>2025년 이후 리뷰가 10건으로 꾸준합니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-anim="topics" aria-label="리뷰 주제">
+    <div class="head"><div class="eyebrow fx">리뷰 170건 주제 분석 (키워드 기준)</div><h2 class="fx">리뷰는 소리보다 디자인과 입문 얘기가 많다</h2></div>
+    <div class="body split even">
+      <div class="topics" id="topics"></div>
+      <div class="photo fx"><img src="assets/img/unboxing.jpg" alt="" onerror="this.remove()"><div class="cap">작성자 대부분이 입문자이거나 자녀에게 사준 부모라, 소리를 구체적으로 평가한 리뷰는 26건뿐입니다.</div></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide" data-anim="reveal" aria-label="결함 리뷰">
+    <div class="head"><div class="eyebrow fx">악기 결함을 말한 리뷰 (한 칸 = 리뷰 1건) · matplotlib</div><h2 class="fx">Swing은 53건 중 4건이 버징·흠집이었다</h2></div>
+    <div class="body split">
+      <div class="figure reveal"><img src="assets/charts/waffle.svg" alt="모델별 결함 리뷰 와플 차트"></div>
+      <div class="points">
+        <div class="quote fx"><p>누르면 버징 개심하고 넥쪽에 찍힘?있고</p><cite>Swing Jazz King · 2점 · 2023-03-30</cite></div>
+        <div class="quote fx"><p>교환받은 상품에도 기스가 있네요..</p><cite>Swing Jazz King · 3점 · 2026-02-27</cite></div>
+        <div class="quote ok fx"><p>가방이 좋고 구성품도 많이 들어 있어서 연습용으로 좋을거 같아요</p><cite>Action Bass Plus · 5점 · 결함 0/23</cite></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide" data-anim="video" aria-label="가성비 지수">
+    <div class="head"><div class="eyebrow fx">가성비 지수 · manim</div><h2 class="fx">평점을 가격으로 나누면 순위가 바뀐다</h2></div>
+    <div class="vid fx"><video src="assets/video/ValueIndex.mp4" poster="assets/video/ValueIndex.png" muted playsinline preload="auto"></video></div>
+  </section>
+
+  <!-- 12 -->
+  <section class="slide" data-anim="picks" aria-label="상황별 추천">
+    <div class="head"><div class="eyebrow fx">상황별 추천</div><h2 class="fx">우선순위에 따라 고르면 된다</h2></div>
+    <div class="body picks" id="picks"></div>
+  </section>
+
+  <!-- 13 -->
+  <section class="slide" data-anim="plain" aria-label="주의 모델">
+    <div class="head"><div class="eyebrow fx">살 때 주의할 모델</div><h2 class="fx">인기와 품질 편차는 따로 봐야 한다</h2></div>
+    <div class="body caution">
+      <div class="cblock">
+        <h3 class="fx">Swing Jazz King <span class="chip">받는 즉시 검수</span></h3>
+        <p class="lead fx">리뷰가 가장 많은 인기 모델이지만, 버징·세팅 불량·흠집 리뷰도 20위권에서 가장 많습니다.</p>
+        <div class="cstats fx"><div><b>53</b><span>구매후기</span></div><div><b>4.83</b><span>평균 평점</span></div><div class="bad"><b>7.5%</b><span>결함 리뷰 4건</span></div></div>
+        <div class="quote fx"><p>처음부터 4현이 잘못 세팅되어 와서 돈주고 세팅받고 어떻게 해도 버징이 심합니다.</p><cite>3점 · 2025-04-21</cite></div>
+        <div class="quote fx"><p>기타도 핸드폰처럼 뽑기를 잘 해야되는데.. 뽑기가 잘 안 된것 같아요..</p><cite>2점 · 2023-03-30</cite></div>
+      </div>
+      <div class="cblock">
+        <h3 class="fx">Cort GB24JJ <span class="chip">목재 지적</span></h3>
+        <p class="lead fx">유일하게 장단점을 자세히 적은 리뷰가 이 모델에 있습니다. 마감·넥 감은 칭찬했지만 바디 목재를 문제 삼았습니다.</p>
+        <div class="cstats fx"><div><b>16</b><span>구매후기</span></div><div><b>4.69</b><span>평균 평점</span></div><div class="bad"><b>2</b><span>3점 리뷰</span></div></div>
+        <div class="quote fx"><p>GB 시리즈 중 구매하실 의향이 있다면 GB64JJ 가 미니멈 입니다. … 바디 목재가 너무 약합니다.</p><cite>3점 · 2025-12-20</cite></div>
+        <div class="quote ok fx"><p>같은 Cort라면 7,900원 싼 Action Bass Plus가 평점·결함 모두 앞섭니다.</p><cite>분석 결과</cite></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="slide" data-anim="plain" aria-label="한계와 마무리">
+    <div class="head"><div class="eyebrow fx">분석 방법과 한계</div><h2 class="fx">이 결론을 읽는 법</h2></div>
+    <div class="body closing">
+      <ul class="limits">
+        <li class="fx">스쿨뮤직 베이스 2026 연간 판매순위 1–20위 중 구성품 패키지 1개를 뺀 19개 상품, 10개 모델의 구매후기 170건 전부를 분석했습니다.</li>
+        <li class="fx">세부 평점(성능·가격·디자인·배송)은 170건 중 168건이 종합 평점과 같아 쓰지 않았습니다.</li>
+        <li class="fx">리뷰 작성자 대부분이 입문자라 외관·배송 평가에 치우쳐 있습니다. 소리는 매장 시연이나 영상으로 확인하세요.</li>
+        <li class="fx">목재·픽업 같은 사양은 상품 페이지에 이미지로만 있어 반영하지 못했습니다.</li>
+        <li class="fx">리뷰가 3건뿐인 Twoman TJB-120과 GopherWood J-Classic IV는 판단을 보류했습니다.</li>
+      </ul>
+      <div class="final fx">
+        <img src="assets/img/rehearsal.jpg" alt="" onerror="this.remove()">
+        <div class="txt"><b>25만원대 <span class="nowrap">Cort Action Bass Plus.</span><br>여유가 있으면 <span class="nowrap">Hex B100.</span></b><span>가격은 2026-10-02 수집 시점의 할인가이며 바뀔 수 있습니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+<div class="chrome">
+  <button class="navbtn" id="prev" aria-label="이전 슬라이드">‹</button>
+  <button class="navbtn" id="next" aria-label="다음 슬라이드">›</button>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="counter" id="counter">1 / 14</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="data/models.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D = window.DECK_DATA;
+  var M = {}; D.models.forEach(function (m) { M[m.key] = m; });
+  var SHORT = { abp: "Action Bass+", apj: "Action PJ", tjb: "TJB-120", gb24: "GB24JJ", gsr: "GSR180", hex: "B100", swing: "Jazz King", gw: "J-Classic IV", c4: "C4 Plus", bb: "BB234" };
+  var BRAND_COLOR = { Cort: "var(--blue)", Swing: "var(--orange)", Hex: "var(--aqua)" };
+  var colorOf = function (brand) { return BRAND_COLOR[brand] || "var(--gray)"; };
+  var won = function (v) { return Math.round(v).toLocaleString("ko-KR"); };
+  var NS = "http://www.w3.org/2000/svg";
+  var svgEl = function (tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- stage scaling ---------- */
+  var stage = document.getElementById("stage");
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, (window.innerHeight - 8) / 900);
+    stage.style.transform = "translate(-50%, -50%) scale(" + s + ")";
+  }
+  window.addEventListener("resize", fit); fit();
+
+  /* ---------- tooltip ---------- */
+  function tooltip(container) {
+    var tip = document.createElement("div"); tip.className = "tooltip"; tip.hidden = true; container.appendChild(tip);
+    return {
+      show: function (lines, x, y) {
+        tip.textContent = "";
+        lines.forEach(function (l, i) { var e = document.createElement(i === 1 ? "b" : "span"); e.textContent = l; tip.appendChild(e); });
+        tip.hidden = false;
+        var cw = container.clientWidth;
+        tip.style.left = Math.min(Math.max(0, x + 16), cw - tip.offsetWidth - 4) + "px";
+        tip.style.top = Math.max(0, y - tip.offsetHeight - 14) + "px";
+      },
+      hide: function () { tip.hidden = true; }
+    };
+  }
+  function localPoint(ev, container) {
+    var r = container.getBoundingClientRect(), s = r.width / container.offsetWidth;
+    return [(ev.clientX - r.left) / s, (ev.clientY - r.top) / s];
+  }
+
+  /* ---------- cover: strings + title letters ---------- */
+  (function () {
+    var svg = document.getElementById("strings");
+    [["G", 1.2], ["D", 1.8], ["A", 2.6], ["E", 3.6]].forEach(function (s, i) {
+      var y = 18 + i * 28;
+      svgEl("path", { d: "M0 " + y + " L1600 " + y, stroke: i === 3 ? "rgba(242,181,68,.55)" : "rgba(238,241,245,.22)", "stroke-width": s[1], fill: "none", class: "str" }, svg);
+      var t = svgEl("text", { x: 70, y: y - 6, fill: "rgba(238,241,245,.45)", "font-size": 14, "font-family": "IBM Plex Mono, monospace" }, svg);
+      t.textContent = s[0];
+    });
+    var h1 = document.getElementById("coverTitle"), txt = h1.textContent; h1.textContent = "";
+    txt.split(" ").forEach(function (w, wi, arr) {
+      var word = document.createElement("span"); word.style.whiteSpace = "nowrap"; word.style.display = "inline-block";
+      w.split("").forEach(function (c) { var s = document.createElement("span"); s.className = "ch"; s.textContent = c; word.appendChild(s); });
+      h1.appendChild(word);
+      if (wi < arr.length - 1) h1.appendChild(document.createTextNode(" "));
+    });
+  })();
+
+  /* ---------- 4: rank grid + brand bars ---------- */
+  (function () {
+    var grid = document.getElementById("grid20");
+    D.ranks.forEach(function (r) {
+      var c = document.createElement("div"); c.className = "cell fx" + (r.model ? "" : " pkg");
+      if (r.model) c.style.background = colorOf(r.brand);
+      var rk = document.createElement("div"); rk.className = "r"; rk.textContent = r.rank + "위";
+      var m = document.createElement("div"); m.className = "m"; m.textContent = r.model ? r.brand + " " + SHORT[r.model] : "구성품 패키지";
+      c.appendChild(rk); c.appendChild(m);
+      if (r.model && M[r.model].pick) { var st = document.createElement("i"); st.className = "star"; c.appendChild(st); }
+      c.title = r.name;
+      grid.appendChild(c);
+    });
+    var counts = {}; D.ranks.forEach(function (r) { if (r.model) counts[r.brand] = (counts[r.brand] || 0) + 1; });
+    var brands = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+    var box = document.getElementById("brandbars");
+    brands.forEach(function (b) {
+      var row = document.createElement("div"); row.className = "bb-row";
+      var l = document.createElement("span"); l.textContent = b;
+      var tr = document.createElement("div"); tr.className = "bb-track";
+      var f = document.createElement("div"); f.className = "bb-fill"; f.style.width = (counts[b] / 6 * 100) + "%"; f.style.background = colorOf(b);
+      tr.appendChild(f);
+      var n = document.createElement("span"); n.className = "n"; n.textContent = counts[b];
+      row.appendChild(l); row.appendChild(tr); row.appendChild(n); box.appendChild(row);
+    });
+  })();
+
+  /* ---------- 5: price bars ---------- */
+  var priceChart = (function () {
+    var el = document.getElementById("priceChart"), W = 1408, H = 560;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "모델별 판매가 가로 막대" }, el);
+    var L = 260, R = W - 130, T = 34, B = H - 44, MAX = 520000;
+    var x = function (v) { return L + (v / MAX) * (R - L); };
+    var models = D.models.slice().sort(function (a, b) { return a.price - b.price; });
+    var rowH = (B - T) / models.length;
+    svgEl("rect", { x: x(250000), y: T - 14, width: x(310000) - x(250000), height: B - T + 14, fill: "rgba(242,181,68,.07)" }, svg);
+    var band = svgEl("text", { x: (x(250000) + x(310000)) / 2, y: T - 20, "text-anchor": "middle", class: "tick", fill: "#f2b544", style: "fill:#f2b544" }, svg);
+    band.textContent = "25만~31만원: 7개 모델";
+    [0, 100000, 200000, 300000, 400000, 500000].forEach(function (v) {
+      svgEl("line", { x1: x(v), x2: x(v), y1: T - 6, y2: B, stroke: "#2a303c", "stroke-width": 1 }, svg);
+      var t = svgEl("text", { x: x(v), y: B + 28, "text-anchor": "middle", class: "tick" }, svg); t.textContent = v ? v / 10000 + "만" : "0";
+    });
+    var budget = svgEl("line", { x1: x(500000), x2: x(500000), y1: T - 14, y2: B, stroke: "#eef1f5", "stroke-width": 2, "stroke-dasharray": "6 6" }, svg);
+    var bt = svgEl("text", { x: x(500000) + 10, y: T - 2, class: "val", style: "fill:#eef1f5" }, svg); bt.textContent = "예산 50만원";
+    var tip = tooltip(el), bars = [];
+    models.forEach(function (m, i) {
+      var cy = T + i * rowH + rowH / 2, h = Math.min(30, rowH - 14);
+      var lab = svgEl("text", { x: L - 16, y: cy + 6, "text-anchor": "end", class: "lab" }, svg); lab.textContent = m.name;
+      var bar = svgEl("rect", { x: L, y: cy - h / 2, width: x(m.price) - L, height: h, rx: 4, fill: m.pick ? "#f2b544" : "#4a515d", class: "hit", tabindex: 0 }, svg);
+      bar.setAttribute("aria-label", m.name + " " + won(m.price) + "원");
+      var v = svgEl("text", { x: x(m.price) + 10, y: cy + 6, class: "val" }, svg); v.textContent = won(m.price) + "원" + (m.pick ? "  · " + m.pick : "");
+      if (m.pick) v.setAttribute("style", "fill:#f2b544");
+      var show = function (ev) {
+        var p = ev && ev.clientX ? localPoint(ev, el) : [x(m.price) / W * el.clientWidth, cy / H * el.clientHeight];
+        tip.show([m.name, won(m.price) + "원", "정가 " + won(m.list) + "원 · " + m.discount + "% 할인", "평균 " + m.avg.toFixed(2) + "점 · 리뷰 " + m.n + "건"], p[0], p[1]);
+      };
+      bar.addEventListener("pointermove", show); bar.addEventListener("focus", function () { show(null); });
+      bar.addEventListener("pointerleave", tip.hide); bar.addEventListener("blur", tip.hide);
+      bars.push({ bar: bar, w: x(m.price) - L, v: v });
+    });
+    return { bars: bars, budget: budget };
+  })();
+
+  /* ---------- 6: bubble ---------- */
+  var bubble = (function () {
+    var el = document.getElementById("bubbleChart"), W = 1408, H = 580;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "가격 대비 평균 평점 버블 차트, 원 크기는 리뷰 수" }, el);
+    var L = 90, R = W - 40, T = 30, B = H - 56;
+    var x = function (v) { return L + (v - 230000) / (520000 - 230000) * (R - L); };
+    var y = function (v) { return B - (v - 4.6) / (5.06 - 4.6) * (B - T); };
+    svgEl("rect", { x: L, y: T, width: x(320000) - L, height: y(4.85) - T, fill: "rgba(242,181,68,.06)" }, svg);
+    var q = svgEl("text", { x: L + 16, y: T + 28, style: "fill:#f2b544", "font-size": 18 }, svg); q.textContent = "싸고 평점 높은 구역";
+    [4.6, 4.7, 4.8, 4.9, 5.0].forEach(function (v) {
+      svgEl("line", { x1: L, x2: R, y1: y(v), y2: y(v), stroke: "#2a303c" }, svg);
+      var t = svgEl("text", { x: L - 14, y: y(v) + 5, "text-anchor": "end", class: "tick" }, svg); t.textContent = v.toFixed(1);
+    });
+    [250000, 300000, 350000, 400000, 450000, 500000].forEach(function (v) {
+      var t = svgEl("text", { x: x(v), y: B + 32, "text-anchor": "middle", class: "tick" }, svg); t.textContent = v / 10000 + "만원";
+    });
+    var yl = svgEl("text", { x: L - 14, y: T - 10, "text-anchor": "end", class: "tick" }, svg); yl.textContent = "평점";
+    var tip = tooltip(el), dots = [];
+    var LABEL = { abp: [0, -1], apj: [-1, 1], tjb: [0, -1], gb24: [1, 1], gsr: [1, -1], hex: [1, -1], swing: [1, 1], gw: [0, 1], c4: [0, -1], bb: [-1, 1] };
+    D.models.forEach(function (m) {
+      var cx = x(m.price), cy = y(m.avg), r = 9 + Math.sqrt(m.n) * 5.2;
+      var g = svgEl("g", {}, svg);
+      var c = svgEl("circle", { cx: cx, cy: cy, r: r, fill: m.pick ? "#f2b544" : "#3987e5", "fill-opacity": m.pick ? 0.92 : 0.55, stroke: "#10131a", "stroke-width": 2, class: "hit", tabindex: 0 }, g);
+      c.setAttribute("aria-label", m.name + " " + won(m.price) + "원, 평균 " + m.avg + "점, 리뷰 " + m.n + "건");
+      var p = LABEL[m.key], lx = cx + p[0] * (r + 8), ly = cy + p[1] * (r + 14) + (p[1] > 0 ? 6 : 0);
+      if (p[0] === 0) ly = cy + p[1] * (r + 12) + (p[1] > 0 ? 12 : 0);
+      var t = svgEl("text", { x: p[0] === 0 ? cx : lx, y: ly, "text-anchor": p[0] > 0 ? "start" : p[0] < 0 ? "end" : "middle", class: "lab", "font-size": 17, style: "font-size:17px" + (m.pick ? ";font-weight:700" : "") }, g);
+      t.textContent = SHORT[m.key] + " " + m.n + "건";
+      var show = function (ev) {
+        var pt = ev && ev.clientX ? localPoint(ev, el) : [cx / W * el.clientWidth, cy / H * el.clientHeight];
+        tip.show([m.name, m.avg.toFixed(2) + "점", won(m.price) + "원 · 리뷰 " + m.n + "건", "5점 비율 " + m.five_pct + "% · 결함 " + m.defects + "건"], pt[0], pt[1]);
+      };
+      c.addEventListener("pointermove", show); c.addEventListener("focus", function () { show(null); });
+      c.addEventListener("pointerleave", tip.hide); c.addEventListener("blur", tip.hide);
+      dots.push({ c: c, r: r, t: t });
+    });
+    var leg = svgEl("g", { transform: "translate(" + (R - 330) + "," + (T + 10) + ")" }, svg);
+    [["#f2b544", "추천 모델"], ["#3987e5", "그 외"]].forEach(function (d, i) {
+      svgEl("circle", { cx: i * 150 + 8, cy: 0, r: 8, fill: d[0] }, leg);
+      var t = svgEl("text", { x: i * 150 + 24, y: 6, class: "val" }, leg); t.textContent = d[1];
+    });
+    var lt = svgEl("text", { x: 0, y: 34, class: "tick" }, leg); lt.textContent = "원 크기 = 리뷰 수";
+    return { dots: dots };
+  })();
+
+  /* ---------- 9: topics ---------- */
+  var topicRows = (function () {
+    var box = document.getElementById("topics"), max = D.topics[0].n, out = [];
+    D.topics.forEach(function (t) {
+      var row = document.createElement("div"); row.className = "tp" + (t.neg ? " neg" : "");
+      var l = document.createElement("span"); l.textContent = t.topic;
+      var tr = document.createElement("div"); tr.className = "track";
+      var f = document.createElement("div"); f.className = "fill"; f.style.width = (t.n / max * 100) + "%";
+      tr.appendChild(f);
+      var n = document.createElement("span"); n.className = "n"; n.textContent = t.n + "건";
+      row.appendChild(l); row.appendChild(tr); row.appendChild(n); box.appendChild(row);
+      out.push({ row: row, fill: f });
+    });
+    return out;
+  })();
+
+  /* ---------- 12: picks ---------- */
+  (function () {
+    var box = document.getElementById("picks");
+    var order = [["abp", "가장 싸게, 검증된 모델", "20위권 최저가에 결함 리뷰 0건. 가방과 구성품이 알차다는 평이 반복됩니다.", "너무이쁘고 소리도 좋아요 가선비짱짱", "5점 · 2024-08-07"],
+                 ["hex", "6만원 더 내고 안심", "리뷰 수와 평점이 함께 가장 높고, 4가지 색상 모두 20위권입니다. 긱백·마감 칭찬이 많습니다.", "마감이랑 긱백이 너무 좋아요", "5점 · 2023-03-19"],
+                 ["gsr", "소리 평가와 가벼움", "11건 모두 5점. 소리를 언급한 비율이 가장 높고 가볍다는 평이 있어 학생에게 맞습니다.", "치기도 편하고 소리가 명확하네요", "5점 · 2024-02-23"],
+                 ["bb", "예산을 꽉 채운다면", "6건 모두 5점. 리뷰가 적고 입문용보다 한 단계 위 가격대입니다.", "가격대 성능비가 최곱니다!", "5점 · 2021-07-19"]];
+    order.forEach(function (o, i) {
+      var m = M[o[0]];
+      var card = document.createElement("article"); card.className = "pick fx" + (i === 0 ? " first" : "");
+      var top = document.createElement("div"); top.className = "top";
+      var img = document.createElement("img"); img.alt = ""; img.src = "assets/img/strings.jpg"; img.onerror = function () { img.remove(); };
+      img.style.objectPosition = (i * 33) + "% 50%";
+      var role = document.createElement("span"); role.className = "role"; role.textContent = o[1];
+      top.appendChild(img); top.appendChild(role);
+      var inn = document.createElement("div"); inn.className = "in";
+      var h = document.createElement("h3"); h.textContent = m.name;
+      var p = document.createElement("div"); p.className = "p"; p.textContent = won(m.price) + "원";
+      var st = document.createElement("div"); st.className = "stats"; st.textContent = m.avg.toFixed(2) + "점 · " + m.n + "건 · 결함 " + m.defects;
+      var d = document.createElement("p"); d.textContent = o[2];
+      var dist = document.createElement("div"); dist.className = "dist"; dist.title = "평점 분포 5·4·3·2점";
+      ["var(--blue)", "#86b6ef", "#c98500", "var(--red)", "var(--red)"].forEach(function (c, k) { if (!m.dist[k]) return; var seg = document.createElement("i"); seg.style.flex = m.dist[k]; seg.style.background = c; dist.appendChild(seg); });
+      var bq = document.createElement("blockquote"); bq.textContent = o[3]; var ct = document.createElement("cite"); ct.textContent = o[4]; bq.appendChild(ct);
+      inn.appendChild(h); inn.appendChild(p); inn.appendChild(st); inn.appendChild(dist); inn.appendChild(d); inn.appendChild(bq);
+      card.appendChild(top); card.appendChild(inn); box.appendChild(card);
+    });
+  })();
+
+  /* ---------- per-slide animations (anime.js) ---------- */
+  function fxIn(slide, delay) {
+    var items = slide.querySelectorAll(".fx");
+    anime.set(items, { opacity: 0, translateY: 26 });
+    return anime({ targets: items, opacity: [0, 1], translateY: [26, 0], delay: anime.stagger(80, { start: delay || 120 }), duration: 700, easing: "easeOutCubic" });
+  }
+  function countUp(slide) {
+    slide.querySelectorAll("[data-count]").forEach(function (el) {
+      var to = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec || "0", 10), suf = el.dataset.suffix || "", o = { v: 0 };
+      anime({ targets: o, v: to, duration: 1600, delay: 450, easing: "easeOutExpo",
+        update: function () { el.textContent = (el.dataset.format === "won" ? won(o.v) : o.v.toFixed(dec)) + suf; } });
+    });
+  }
+  var ANIM = {
+    cover: function (s) {
+      anime.set(s.querySelectorAll(".ch"), { opacity: 0, translateY: 60, rotate: 8 });
+      anime({ targets: s.querySelectorAll(".ch"), opacity: 1, translateY: 0, rotate: 0, delay: anime.stagger(45, { start: 250 }), duration: 900, easing: "easeOutExpo" });
+      s.querySelectorAll(".str").forEach(function (p) { var len = 1600; p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
+      anime({ targets: s.querySelectorAll(".str"), strokeDashoffset: [1600, 0], delay: anime.stagger(140, { start: 500 }), duration: 1400, easing: "easeInOutQuart" });
+      anime({ targets: s.querySelectorAll(".str"), translateY: [{ value: -2, duration: 90 }, { value: 2, duration: 90 }, { value: 0, duration: 120 }], delay: anime.stagger(140, { start: 2000 }), easing: "linear" });
+      fxIn(s, 900);
+    },
+    verdict: function (s) { fxIn(s); countUp(s); },
+    video: function (s) {
+      fxIn(s);
+      var v = s.querySelector("video");
+      if (v) { try { v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+    },
+    ranks: function (s) {
+      fxIn(s);
+      anime.set(s.querySelectorAll(".cell"), { opacity: 0, scale: 0.6 });
+      anime({ targets: s.querySelectorAll(".cell"), opacity: 1, scale: 1, delay: anime.stagger(55, { grid: [5, 4], from: "first", start: 300 }), duration: 650, easing: "easeOutBack" });
+      anime({ targets: s.querySelectorAll(".bb-fill"), scaleX: [0, 1], delay: anime.stagger(110, { start: 1300 }), duration: 900, easing: "easeOutQuart" });
+    },
+    price: function (s) {
+      fxIn(s);
+      priceChart.bars.forEach(function (b) { b.bar.setAttribute("width", 0); b.v.style.opacity = 0; });
+      anime({ targets: priceChart.bars.map(function (b) { return b.bar; }), width: function (el, i) { return priceChart.bars[i].w; }, delay: anime.stagger(90, { start: 350 }), duration: 1000, easing: "easeOutQuart" });
+      anime({ targets: priceChart.bars.map(function (b) { return b.v; }), opacity: [0, 1], delay: anime.stagger(90, { start: 1000 }), duration: 500, easing: "linear" });
+      anime({ targets: priceChart.budget, strokeDashoffset: [0, -24], duration: 1200, loop: 3, easing: "linear" });
+    },
+    bubble: function (s) {
+      fxIn(s);
+      bubble.dots.forEach(function (d) { d.c.setAttribute("r", 0); d.t.style.opacity = 0; });
+      anime({ targets: bubble.dots.map(function (d) { return d.c; }), r: function (el, i) { return bubble.dots[i].r; }, delay: anime.stagger(110, { start: 350 }), duration: 1100, easing: "easeOutElastic(1, .6)" });
+      anime({ targets: bubble.dots.map(function (d) { return d.t; }), opacity: [0, 1], delay: anime.stagger(110, { start: 900 }), duration: 500, easing: "linear" });
+    },
+    reveal: function (s) {
+      fxIn(s, 500);
+      var f = s.querySelector(".reveal");
+      anime.set(f, { clipPath: "inset(0 100% 0 0)" });
+      anime({ targets: f, clipPath: ["inset(0 100% 0 0)", "inset(0 0% 0 0)"], duration: 1400, delay: 200, easing: "easeInOutCubic" });
+    },
+    topics: function (s) {
+      fxIn(s);
+      anime({ targets: topicRows.map(function (t) { return t.fill; }), scaleX: [0, 1], delay: anime.stagger(120, { start: 350 }), duration: 1000, easing: "easeOutQuart" });
+    },
+    picks: function (s) {
+      var cards = s.querySelectorAll(".pick");
+      fxIn(s);
+      anime.set(cards, { opacity: 0, rotateY: -35, translateY: 40 });
+      anime({ targets: cards, opacity: 1, rotateY: 0, translateY: 0, delay: anime.stagger(150, { start: 300 }), duration: 900, easing: "easeOutCubic" });
+    },
+    plain: function (s) { fxIn(s); }
+  };
+
+  /* ---------- navigation ---------- */
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var cur = -1, bar = document.getElementById("bar"), counter = document.getElementById("counter");
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i === cur) return;
+    if (cur >= 0) {
+      slides[cur].classList.remove("active");
+      var pv = slides[cur].querySelector("video"); if (pv) pv.pause();
+    }
+    cur = i;
+    var s = slides[cur];
+    s.classList.add("active");
+    bar.style.width = ((cur + 1) / slides.length * 100) + "%";
+    counter.textContent = (cur + 1) + " / " + slides.length;
+    if (location.hash !== "#" + (cur + 1)) history.replaceState(null, "", "#" + (cur + 1));
+    if (window.anime && !reduce) ANIM[s.dataset.anim](s);
+    else {
+      // 모션 줄이기 또는 anime.js 로드 실패: 최종 상태를 바로 보여줌
+      s.querySelectorAll("[data-count]").forEach(function (el) {
+        var to = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec || "0", 10);
+        el.textContent = (el.dataset.format === "won" ? won(to) : to.toFixed(dec)) + (el.dataset.suffix || "");
+      });
+      if (s.dataset.anim === "video") { var v = s.querySelector("video"); if (v) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } }
+    }
+  }
+  document.getElementById("prev").addEventListener("click", function () { go(cur - 1); });
+  document.getElementById("next").addEventListener("click", function () { go(cur + 1); });
+  document.addEventListener("keydown", function (e) {
+    if (["ArrowRight", "PageDown", " ", "Enter"].indexOf(e.key) >= 0) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].indexOf(e.key) >= 0) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(slides.length - 1);
+    else if (e.key === "f" || e.key === "F") { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); }
+  });
+  var tx = null;
+  document.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", function (e) {
+    if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
+  });
+  window.addEventListener("hashchange", function () { var n = parseInt(location.hash.slice(1), 10); if (n) go(n - 1); });
+  var start = parseInt(location.hash.slice(1), 10);
+  go(start ? start - 1 : 0);
+})();
+</script>
+</body>
+</html>
