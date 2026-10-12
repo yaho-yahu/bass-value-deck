@@ -186,6 +186,8 @@ h2 { font-size: 54px; line-height: 1.18; }
 .limits { display: grid; gap: 16px; align-content: start; margin: 0; padding: 0; list-style: none; }
 .limits li { font-size: 19px; color: var(--ink-2); line-height: 1.55; padding-left: 22px; position: relative; }
 .limits li::before { content: ""; position: absolute; left: 0; top: .65em; width: 10px; height: 2px; background: var(--ink-3); }
+.closing-left { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+.signoff { font-family: var(--font-display); font-size: 56px; line-height: 1.1; }
 .final { position: relative; border-radius: 16px; overflow: hidden; background: linear-gradient(160deg, #2a2216, #10131a); }
 .final img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
 .final .txt { position: absolute; left: 34px; right: 34px; bottom: 34px; display: grid; gap: 12px; }
@@ -348,6 +350,7 @@ h2 { font-size: 54px; line-height: 1.18; }
   <section class="slide" data-anim="plain" aria-label="한계와 마무리">
     <div class="head"><div class="eyebrow fx">분석 방법과 한계</div><h2 class="fx">이 결론을 읽는 법</h2></div>
     <div class="body closing">
+      <div class="closing-left">
       <ul class="limits">
         <li class="fx">스쿨뮤직 베이스 2026 연간 판매순위 1–20위 중 구성품 패키지 1개를 뺀 19개 상품, 10개 모델의 구매후기 170건 전부를 분석했습니다.</li>
         <li class="fx">세부 평점(성능·가격·디자인·배송)은 170건 중 168건이 종합 평점과 같아 쓰지 않았습니다.</li>
@@ -355,6 +358,8 @@ h2 { font-size: 54px; line-height: 1.18; }
         <li class="fx">목재·픽업 같은 사양은 상품 페이지에 이미지로만 있어 반영하지 못했습니다.</li>
         <li class="fx">리뷰가 3건뿐인 Twoman TJB-120과 GopherWood J-Classic IV는 판단을 보류했습니다.</li>
       </ul>
+      <div class="signoff fx">장슝좍</div>
+      </div>
       <div class="final fx">
         <img src="assets/img/rehearsal.jpg" alt="" onerror="this.remove()">
         <div class="txt"><b>25만원대 <span class="nowrap">Cort Action Bass Plus.</span><br>여유가 있으면 <span class="nowrap">Hex B100.</span></b><span>가격은 2026-10-02 수집 시점의 할인가이며 바뀔 수 있습니다.</span></div>
